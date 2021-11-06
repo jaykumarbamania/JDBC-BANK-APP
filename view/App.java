@@ -20,6 +20,7 @@ public class App {
 
 		String choice = "0";
 //		bank.displayChoice();
+//Jaykumar
 
 		while (!choice.equals("5")) {
 			App.displayChoice();
@@ -34,34 +35,14 @@ public class App {
 			}
 			switch (choice) {
 			case "1":
-//				if (reg.Registeration()) {
-//					App.displayHeader("Registered Successfully");
-//				}
-//				break;
+				if (Register.Registeration()) {
+					App.displayHeader("Registered Successfully");
+				}
+				break;
 			case "2":
 
-//				System.out.print("Enter username : ");
-//				String username = brInp.readLine();
-//
-//				System.out.print("Enter Password : ");
-//				String password = brInp.readLine();
-//				boolean auth = login.checkUserLogin(username, password);
-//				if (auth) {
-//					App.displayHeader("W E L C O M E");
-//					login.displayLoginedChoice();
-//					System.out.print("Enter your choice : ");
-//					ops.ch = brInp.readLine();
-//					boolean notLogOut = ops.performOperations(ops.ch);
-//					while (notLogOut != false) {
-//						login.displayLoginedChoice();
-//						System.out.print("Enter your choice : ");
-//						ops.ch = brInp.readLine();
-//						notLogOut = ops.performOperations(ops.ch);
-//					}
-//				} else {
-//					System.err.println("Invalid Credentials");
-//					App.displayHeader("Login Again");
-//				}
+				Login.LoginProcess();
+
 
 				break;
 			case "3":

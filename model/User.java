@@ -11,7 +11,7 @@ public class User {
 	private String password;
 	private double InitialDep;
 	private double balance;
-	long accountNo = (long) Math.floor(Math.random() * 9000000000L) + 1000000000L;
+	long accountNo = 0;
 	private Date createdAt;
 	
 	public User(int id, String username, long accountNo, String name, String address, String contact, String password,
@@ -107,6 +107,13 @@ public class User {
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", name=" + name + ", address=" + address + ", contact="
+				+ contact + ", password=" + password + ", InitialDep=" + InitialDep + ", balance=" + balance
+				+ ", accountNo=" + accountNo + ", createdAt=" + createdAt + "]";
 	}
 	
 	
