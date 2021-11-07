@@ -25,14 +25,15 @@ public class Login {
 			App.displayHeader("W E L C O M E");
 			Login.displayLoginedChoice();
 			System.out.print("Enter your choice : ");
-//			ops.ch = brInp.readLine();
-//			boolean notLogOut = ops.performOperations(ops.ch);
-//			while (notLogOut != false) {
-//				login.displayLoginedChoice();
-//				System.out.print("Enter your choice : ");
-//				ops.ch = brInp.readLine();
-//				notLogOut = ops.performOperations(ops.ch);
-//			}
+			Services ops = new Services();
+			ops.ch = brInp.readLine();
+			boolean notLogOut = ops.performServices(ops.ch);
+			while (notLogOut != false) {
+				Login.displayLoginedChoice();
+				System.out.print("Enter your choice : ");
+				ops.ch = brInp.readLine();
+				notLogOut = ops.performServices(ops.ch);
+			}
 		} else {
 			System.err.println("Invalid Credentials");
 			App.displayHeader("Login Again");
@@ -42,9 +43,8 @@ public class Login {
 	private static boolean checkUserLogin(String username, String password) {
 
 		boolean logined = false;
-		User u = null;
-		if (UserController.getUser(username, password) != null) {
-			u = UserController.getUser(username, password);
+		User u = UserController.userLogin(username, password);
+		if (u != null) {
 			System.out.println(u.toString());
 			logined = true;
 			Login.setLoginnedUser(u);
