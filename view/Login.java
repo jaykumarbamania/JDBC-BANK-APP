@@ -23,6 +23,7 @@ public class Login {
 		boolean auth = Login.checkUserLogin(username, password);
 		if (auth) {
 			App.displayHeader("W E L C O M E");
+			System.out.println("Created on : "+Login.loginnedUser.getCreatedAt());
 			Login.displayLoginedChoice();
 			System.out.print("Enter your choice : ");
 			Services ops = new Services();

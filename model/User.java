@@ -1,5 +1,7 @@
 package bankApp.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class User {
@@ -12,8 +14,8 @@ public class User {
 	private double InitialDep;
 	private double balance;
 	long accountNo = 0;
-	private Date createdAt;
-	
+	private String createdAt;
+	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss");
 	public User(int id, String username, long accountNo, String name, String address, String contact, String password,
 			double initialDep, double balance, Date createdAt) {
 		this.id = id;
@@ -25,7 +27,7 @@ public class User {
 		this.InitialDep = initialDep;
 		this.balance = balance;
 		this.accountNo = accountNo;
-		this.createdAt = createdAt;
+		this.createdAt =  String.format(dateFormat.format(createdAt));
 	}
 
 	public int getId() {
@@ -101,11 +103,11 @@ public class User {
 		this.accountNo = accountNo;
 	}
 
-	public Date getCreatedAt() {
+	public String getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(String createdAt) {
 		this.createdAt = createdAt;
 	}
 

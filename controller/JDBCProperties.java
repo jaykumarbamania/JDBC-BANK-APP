@@ -11,7 +11,7 @@ public class JDBCProperties {
 	public static String url = null;
 	public static String username = null;
 	public static String password = null;
-	static Connection con;
+	Connection con;
 	
 	public static void loadProperties() {
 		
@@ -36,6 +36,8 @@ public class JDBCProperties {
 	}
 	
 	public static Connection getConnection() {
+		JDBCProperties conObj = new JDBCProperties();
+		Connection con = conObj.con;
 		try {
 			loadProperties();
 			Class.forName(driverClass);

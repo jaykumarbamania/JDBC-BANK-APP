@@ -11,12 +11,12 @@ import java.util.List;
 import bankApp.model.User;
 
 public class UserController {
-	
-	static Connection con = JDBCProperties.getConnection();
+
 	static Statement st = null;
-	
-	//method to get all user
-	public static List<User>  getAllUsers() throws SQLException {
+
+	// method to get all user
+	public static List<User> getAllUsers() throws SQLException {
+		Connection con = JDBCProperties.getConnection();
 		
 		List<User> users = new ArrayList<User>();
 		PreparedStatement pst = null;
@@ -24,23 +24,24 @@ public class UserController {
 			String query = "SELECT * FROM BANKDB.USERS";
 			pst = con.prepareStatement(query);
 			ResultSet rs = pst.executeQuery();
-			while(rs.next()) {
-				users.add(new User(rs.getInt(1),rs.getString(2),rs.getLong(3),
-						rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getDouble(8),rs.getDouble(9),rs.getDate(10)));
+			while (rs.next()) {
+				users.add(new User(rs.getInt(1), rs.getString(2), rs.getLong(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getDouble(8), rs.getDouble(9), rs.getDate(10)));
 			}
-		}catch(Exception e) {e.printStackTrace();}
-		finally {
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			pst.close();
 			con.close();
 		}
 		return users;
 	}
-	
-	//method to register user in database
-	public static int insertUser(String username,long accountNo,String name, String address, 
-			String contact,String password, Double initialDep) throws Exception {
-		
+
+	// method to register user in database
+	public static int insertUser(String username, long accountNo, String name, String address, String contact,
+			String password, Double initialDep) throws Exception {
+
+		Connection con = JDBCProperties.getConnection();
 		PreparedStatement pst = null;
 		String insertQuery = "INSERT INTO USERS(user_id,user_name,user_accountNo,user_fullname,"
 				+ "user_address,user_contact,user_password,user_initialDep,user_balance) VALUES(null,?,?,?,?,?,?,?,?)";
@@ -57,32 +58,53 @@ public class UserController {
 		pst.close();
 		return result;
 	}
-	
-	//method to check user for login purpose
-	public static User userLogin(String username,String password)  {
-		PreparedStatement pst = null;
+
+	// method to check user for login purpose
+	public static User userLogin(String username, String password) {
+		
+		Connection con = JDBCProperties.getConnection();
 		User u = null;
 		String query = "SELECT * FROM BANKDB.USERS WHERE user_name = ? AND user_password = ?";
 		try {
-			pst = con.prepareStatement(query);
+			PreparedStatement pst  = con.prepareStatement(query);
 			pst.setString(1, username);
 			pst.setString(2, password);
 			ResultSet rs = pst.executeQuery();
 //			System.out.println(rs.toString());
-			if(rs.next()) {
-				u = new User(rs.getInt(1),rs.getString(2),rs.getLong(3),
-						rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getDouble(8),rs.getDouble(9),rs.getDate(10));
+			if (rs.next()) {
+				u = new User(rs.getInt(1), rs.getString(2), rs.getLong(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getDouble(8), rs.getDouble(9), rs.getTimestamp(10));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return u;
-		
+
 	}
-	
-	//method to update user_balance of a specified user
-	public static void updateUserBalance(String username, double amount,boolean credit) {
+
+	// get User using only username to check user if exist's or not
+	public static User getUser(String username) {
+		Connection con = JDBCProperties.getConnection();
+		User u = null;
+		String query = "SELECT * FROM BANKDB.USERS WHERE user_name = ?";
+		try {
+			PreparedStatement pst = con.prepareStatement(query);
+			pst = con.prepareStatement(query);
+			pst.setString(1, username);
+			ResultSet rs = pst.executeQuery();
+			if (rs.next()) {
+				u = new User(rs.getInt(1), rs.getString(2), rs.getLong(3), rs.getString(4), rs.getString(5),
+						rs.getString(6), rs.getString(7), rs.getDouble(8), rs.getDouble(9), rs.getTimestamp(10));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+	}
+
+	// method to update user_balance of a specified user
+	public static void updateUserBalance(String username, double amount, boolean credit) {
+		Connection con = JDBCProperties.getConnection();
 		PreparedStatement pst = null;
 		double user_updated_balance = credit ? getBalance(username) + amount : getBalance(username) - amount;
 //		System.out.println(user_updated_balance);
@@ -97,44 +119,25 @@ public class UserController {
 			e.printStackTrace();
 		}
 	}
-	
-	//get only user_balance using username
+
+	// get only user_balance using username
 	public static double getBalance(String username) {
+		Connection con = JDBCProperties.getConnection();
 		double user_current_balance = 0;
 		String query = "SELECT * FROM BANKDB.USERS WHERE user_name = ?";
 		try {
-			PreparedStatement pst  = con.prepareStatement(query);
+			PreparedStatement pst = con.prepareStatement(query);
 			pst = con.prepareStatement(query);
 			pst.setString(1, username);
 			ResultSet rs = pst.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				user_current_balance = rs.getDouble(9);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user_current_balance;
-	}
-	
-	//get User using only username to check user if exist's or not
-	public static User getUser(String username) { 
-		User u = null;
-		String query = "SELECT * FROM BANKDB.USERS WHERE user_name = ?";
-		try {
-			PreparedStatement pst  = con.prepareStatement(query);
-			pst = con.prepareStatement(query);
-			pst.setString(1, username);
-			ResultSet rs = pst.executeQuery();
-			if(rs.next()) {
-				u = new User(rs.getInt(1),rs.getString(2),rs.getLong(3),
-						rs.getString(4),rs.getString(5),rs.getString(6),
-						rs.getString(7),rs.getDouble(8),rs.getDouble(9),rs.getDate(10));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return u;
 	}
 
 }

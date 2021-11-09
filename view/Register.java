@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import bankApp.controller.BankExceptions;
 import bankApp.controller.UserController;
+import bankApp.model.User;
 
 
 public class Register {
@@ -117,17 +118,17 @@ public class Register {
 	}
 	
 	static boolean verifyUsername(String username) {
-//		User u = null;
-//		u = Update.UserDetail(username, false);
-//		
-//		try {
-//			if(u != null) {
-//				throw new BankExceptions("This username is not available");
-//			}
-//		}catch(BankExceptions e) {
-//			System.err.println(e);
-//			return false;
-//		}
+		User u = null;
+		u = UserController.getUser(username);
+		
+		try {
+			if(u != null) {
+				throw new BankExceptions("This username is not available");
+			}
+		}catch(BankExceptions e) {
+			System.err.println(e);
+			return false;
+		}
 		return true;
 	}
 }
