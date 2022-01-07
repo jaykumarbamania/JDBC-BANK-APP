@@ -1,6 +1,8 @@
 package bankApp.view;
 
 
+import java.sql.SQLException;
+
 import bankApp.controller.UserController;
 import bankApp.model.User;
 
@@ -12,9 +14,12 @@ import bankApp.model.User;
 
 public class ShowAccounts {
 	
-	public void displayDetails(boolean everyDetails) throws Exception {
-//		Use.getAllStudent().stream().forEach(st -> System.out.println(st.getStname()+" "+st.getMarks()));
-		UserController.getAllUsers().stream().forEach(user -> displayFunction(everyDetails, user));
+	public void displayDetails(boolean everyDetails)  {
+		try {
+			UserController.getAllUsers().stream().forEach(user -> displayFunction(everyDetails, user));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void displayFunction(boolean everyDetails,User user) {

@@ -139,5 +139,9 @@ public class UserController {
 		}
 		return user_current_balance;
 	}
+	
+	public static void updateUserDetails() {
+		
+	}
 
 }

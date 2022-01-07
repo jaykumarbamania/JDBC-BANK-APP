@@ -22,7 +22,6 @@ public class Services {
 	
 	boolean performServices(String ch) throws IOException {
 		currentUser = Login.getLoginnedUser();
-		Scanner input = new Scanner(System.in);
 		String currentUsername = currentUser.getUsername();
 //		PaymentInterface paymentRef = Payments::new; 
 		switch (ch) {
@@ -69,22 +68,23 @@ public class Services {
 	}
 	
 	private static void deposit(String user) {
-		Scanner input = new Scanner(System.in);
-		System.out.print("Enter Amount : ");
-		double amt=0;
-		try {
-			amt = input.nextDouble();
-			if(!Pattern.matches(".*[^0-9].*", Double.toString(amt))) {
-				throw new BankExceptions("Enter proper numbers for amount");
-			}
-			UserController.updateUserBalance(user, amt, true); // true - for credit the amount
+		try (Scanner input = new Scanner(System.in)) {
+			System.out.print("Enter Amount : ");
+			double amt=0;
 			try {
+				amt = input.nextDouble();
+				if(!Pattern.matches(".*[^0-9].*", Double.toString(amt))) {
+					throw new BankExceptions("Enter proper numbers for amount");
+				}
+				UserController.updateUserBalance(user, amt, true); // true - for credit the amount
 				PaymentController.storePayments(user, "", amt, UserController.getBalance(user), 0);
-			} catch (Exception e) {
+				
+			}catch(BankExceptions e) {
+				System.err.println(e);
+			}
+			catch (Exception e) {
 				e.printStackTrace();
 			}
-		}catch(BankExceptions e) {
-			System.err.println(e);
 		}
 	}
 	
